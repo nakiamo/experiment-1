@@ -424,11 +424,15 @@
         const rejectCookiesButton = document.getElementById("reject-cookies");
 
         function sendToQualtrics(choice) {
-            const iframe = document.createElement("iframe");
-            iframe.style.display = "none";
-            iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodeURIComponent(choice)}`;
-            document.body.appendChild(iframe);
-        }
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+
+    // Construct the URL and log it to verify correctness
+    iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodeURIComponent(choice)}`;
+    console.log(`Iframe URL: ${iframe.src}`); // Log the URL
+
+    document.body.appendChild(iframe);
+}
 
         // Track button clicks
         managePreferencesButton.addEventListener("click", function () {

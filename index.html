@@ -424,19 +424,19 @@
         const rejectCookiesButton = document.getElementById("reject-cookies");
 
         function sendToQualtrics(choice) {
-    const testChoice = "TestChoice"; // Hardcoded string for testing
+    const encodedChoice = encodeURIComponent(choice); // Explicitly encode the value
 
     if (window.parent && window.parent.Qualtrics) {
-        // Pass the hardcoded string to Qualtrics
-        window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", testChoice);
-        console.log(`Sent to Qualtrics: ${testChoice}`); // Debug log
+        // Pass the evaluated and encoded string
+        window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", encodedChoice);
+        console.log(`Sent to Qualtrics: ${encodedChoice}`); // Debug log
     } else {
-        // Fallback: Send the hardcoded string via an iframe
+        // Fallback: Send via iframe
         const iframe = document.createElement("iframe");
         iframe.style.display = "none";
-        iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodeURIComponent(testChoice)}`;
+        iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodedChoice}`;
         document.body.appendChild(iframe);
-        console.log(`Sent via iframe: ${testChoice}`);
+        console.log(`Sent via iframe: ${encodedChoice}`);
     }
 }
 

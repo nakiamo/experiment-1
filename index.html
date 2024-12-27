@@ -47,27 +47,19 @@
         }
 
         nav {
-            display: none;
-        }
-
-        nav.active {
-            display: block;
-            position: absolute;
-            top: 60px;
-            left: 0;
-            width: 100%;
-            background-color: var(--colorGreenStarbucks);
-            text-align: center;
+            display: flex;
+            align-items: center;
         }
 
         nav ul {
             list-style: none;
             margin: 0;
             padding: 0;
+            display: flex;
         }
 
         nav ul li {
-            margin: 10px 0;
+            margin-left: var(--space-3);
         }
 
         nav ul li a {
@@ -90,20 +82,27 @@
         }
 
         @media (max-width: 768px) {
-            .menu-toggle {
-                display: flex;
-            }
-
             nav {
                 display: none;
             }
 
             nav.active {
                 display: block;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: var(--colorGreenStarbucks);
+                text-align: center;
             }
 
             nav ul {
+                flex-direction: column;
                 padding: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
             }
         }
 

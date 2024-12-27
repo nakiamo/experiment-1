@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspired Webpage</title>
+    <style>
+        :root {
+            --colorWhite: #fff;
+            --colorNeutralCool: #f3f1e7;
+            --colorGreenStarbucks: #1e3932;
+            --colorBlack: #000;
+            --colorTextBackground: #d4e9e2;
+            --textSize2: 1.4rem;
+            --lineHeightNormal: 1.5;
+            --space-3: 1.6rem;
+            --space-6: 4rem;
+        }
+
+        body {
+            margin: 0;
+            font-family: SoDoSans, Helvetica Neue, Helvetica, Arial, sans-serif;
+            background-color: var(--colorWhite);
+            color: var(--colorBlack);
+            font-size: var(--textSize2);
+            line-height: var(--lineHeightNormal);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-3) var(--space-6);
+            background-color: var(--colorGreenStarbucks);
+            color: var(--colorWhite);
+        }
+
+        header .logo {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: var(--space-3);
+        }
+
+        nav ul li a {
+            color: var(--colorWhite);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .hero {
+            background-image: url('https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-96387.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--colorWhite);
+            font-size: 3.6rem;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: var(--space-6);
+            text-align: center;
+        }
+
+        .content h1 {
+            font-size: 2.8rem;
+            color: var(--colorGreenStarbucks);
+        }
+
+        .content p {
+            font-size: 1.6rem;
+            margin: 2rem 0;
+        }
+
+        .columns {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-6);
+            padding: 0;
+        }
+
+        .column {
+            display: flex;
+            align-items: stretch;
+            background-color: var(--colorNeutralCool);
+            border-radius: 12px;
+            overflow: hidden;
+            flex-direction: column;
+            margin: 0;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .columns {
+                grid-template-columns: 1fr;
+                padding: var(--space-6);
+            }
+
+            .column {
+                flex-direction: row;
+            }
+
+            .column img {
+                flex: 1;
+                width: 100%;
+                max-width: 50%;
+                height: auto;
+                object-fit: cover;
+            }
+
+            .column .text {
+                flex: 1;
+                max-width: 50%;
+                padding: var(--space-3);
+                background-color: var(--colorTextBackground);
+                color: var(--colorBlack);
+                box-sizing: border-box;
+            }
+        }
+
+        .column img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .column .text {
+            width: 100%;
+            padding: var(--space-3);
+            background-color: var(--colorTextBackground);
+            color: var(--colorBlack);
+            box-sizing: border-box;
+        }
+
+        .column .text h2 {
+            margin: 0 0 10px;
+            font-size: 2rem;
+            color: var(--colorGreenStarbucks);
+        }
+
+        .column .text p {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .footer {
+            background-color: var(--colorBlack);
+            color: var(--colorWhite);
+            padding: var(--space-6);
+            text-align: center;
+        }
+
+        .footer a {
+            color: var(--colorGreenStarbucks);
+            text-decoration: none;
+        }
+
+        /* Cookie Consent Styles */
+        #cookie-consent-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #cookie-consent-box {
+            background-color: var(--colorNeutralCool);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        #cookie-consent-box h2 {
+            color: var(--colorGreenStarbucks);
+            margin-bottom: 1rem;
+        }
+
+        #cookie-consent-box button {
+            background-color: var(--colorGreenStarbucks);
+            color: var(--colorWhite);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+
+        #cookie-consent-box a {
+            color: var(--colorGreenStarbucks);
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        #preference-options {
+            display: none;
+            margin-top: 1rem;
+            text-align: left;
+        }
+
+        #preference-options label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Fade-out Animation */
+        .fade-out {
+            animation: fadeOut 1s forwards;
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="cookie-consent-banner">
+        <div id="cookie-consent-box">
+            <h2>Manage Your Preferences</h2>
+            <div id="preference-options">
+                <label><input type="checkbox" id="performance-cookies"> Performance Cookies</label>
+                <label><input type="checkbox" id="strictly-necessary-cookies" checked disabled> Strictly Necessary Cookies</label>
+                <label><input type="checkbox" id="targeting-cookies"> Targeting Cookies</label>
+                <button id="save-preferences">Save Preferences</button>
+            </div>
+            <p id="cookie-options-text">This website uses cookies to ensure you get the best experience. By using this site, you consent to the use of cookies.</p>
+            <div id="cookie-buttons">
+                <button id="accept-cookies">Accept</button>
+                <button id="reject-cookies">Reject</button>
+                <button id="manage-preferences">Manage My Preferences</button>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo">My Inspired Website</div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Menu</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero">
+        Welcome to Our Website
+    </div>
+
+    <div class="content">
+        <h1>Discover Our Offerings</h1>
+        <p>We provide high-quality products and services designed to delight you. Explore our menu and find your favorites!</p>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <img src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-96388.jpg" alt="Reward Tiers">
+            <div class="text">
+                <h2>Column 1</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+        </div>
+        <div class="column">
+            <img src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-96389.jpg" alt="Rewards Details">
+            <div class="text">
+                <h2>Column 2</h2>
+                <p>Quisque sit amet est et sapien ullamcorper pharetra.</p>
+            </div>
+        </div>
+        <div class="column">
+            <img src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-96390.jpg" alt="Rewards Card">
+            <div class="text">
+                <h2>Column 3</h2>
+                <p>Vestibulum volutpat pretium libero, ut cursus arcu.</p

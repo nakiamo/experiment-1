@@ -424,19 +424,20 @@
         const rejectCookiesButton = document.getElementById("reject-cookies");
 
         function sendToQualtrics(choice) {
-            if (window.parent && window.parent.Qualtrics) {
-                // Pass data back to Qualtrics
-                window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", choice);
-                console.log(`Sent to Qualtrics: ${choice}`); // Debug log
-            } else {
-                // Fallback: Send data via an iframe
-                const iframe = document.createElement("iframe");
-                iframe.style.display = "none";
-                iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodeURIComponent(choice)}`;
-                document.body.appendChild(iframe);
-                console.log(`Sent via iframe: ${choice}`);
-            }
-        }
+    console.log(`Attempting to send choice: ${choice}`); // Debug log
+    if (window.parent && window.parent.Qualtrics) {
+        // Pass data back to Qualtrics
+        window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", choice);
+        console.log(`Sent to Qualtrics: ${choice}`); // Debug log
+    } else {
+        // Fallback: Send data via an iframe
+        const iframe = document.createElement("iframe");
+        iframe.style.display = "none";
+        iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodeURIComponent(choice)}`;
+        document.body.appendChild(iframe);
+        console.log(`Sent via iframe: ${iframe.src}`); // Debug log
+    }
+}
 
 
         // Attach event listeners to the buttons

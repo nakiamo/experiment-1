@@ -428,7 +428,7 @@
             const embeddedDataField = queryParams.get("embeddedDataField") || "CookieConsentChoice";
             const iframe = document.createElement("iframe");
             iframe.style.display = "none";
-            iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${choice}`;
+            iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?${embeddedDataField}=${choice}`;
             document.body.appendChild(iframe);
         }
 

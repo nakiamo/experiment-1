@@ -424,15 +424,19 @@
         const rejectCookiesButton = document.getElementById("reject-cookies");
 
         function sendToQualtrics(choice) {
-            const iframe = document.createElement("iframe");
-            iframe.style.display = "none";
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
 
-            // Properly interpolate the choice value
-            iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodeURIComponent(choice)}`;
-            console.log(`Iframe URL: ${iframe.src}`); // Log the constructed URL for debugging
+    // Construct the URL with proper interpolation
+    iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodeURIComponent(choice)}`;
 
-            document.body.appendChild(iframe);
-        }
+    // Debugging: Log the URL and choice
+    console.log(`Choice: ${choice}`); // Logs the choice value
+    console.log(`Iframe URL: ${iframe.src}`); // Logs the constructed iframe URL
+
+    document.body.appendChild(iframe);
+}
+
 
         // Attach event listeners to the buttons
         managePreferencesButton.addEventListener("click", function () {

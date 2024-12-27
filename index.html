@@ -416,5 +416,36 @@
             });
         });
     </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const managePreferencesButton = document.getElementById("manage-preferences");
+        const acceptCookiesButton = document.getElementById("accept-cookies");
+        const rejectCookiesButton = document.getElementById("reject-cookies");
+
+        function sendToQualtrics(choice) {
+            const queryParams = new URLSearchParams(window.location.search);
+            const embeddedDataField = queryParams.get("embeddedDataField") || "CookieConsentChoice";
+            const iframe = document.createElement("iframe");
+            iframe.style.display = "none";
+            iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG${embeddedDataField}=${choice}`;
+            document.body.appendChild(iframe);
+        }
+
+        // Track button clicks
+        managePreferencesButton.addEventListener("click", function () {
+            sendToQualtrics("Manage Preferences");
+        });
+       
+        acceptCookiesButton.addEventListener("click", function () {
+            sendToQualtrics("Accept");
+        });
+
+        rejectCookiesButton.addEventListener("click", function () {
+            sendToQualtrics("Reject");
+        });
+    });
+</script>
+
 </body>
 </html>

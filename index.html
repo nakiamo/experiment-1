@@ -424,11 +424,9 @@
         const rejectCookiesButton = document.getElementById("reject-cookies");
 
         function sendToQualtrics(choice) {
-            const queryParams = new URLSearchParams(window.location.search);
-            const embeddedDataField = queryParams.get("embeddedDataField") || "CookieConsentChoice";
             const iframe = document.createElement("iframe");
             iframe.style.display = "none";
-            iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?${embeddedDataField}=${choice}`;
+            iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodeURIComponent(choice)}`;
             document.body.appendChild(iframe);
         }
 
@@ -436,7 +434,7 @@
         managePreferencesButton.addEventListener("click", function () {
             sendToQualtrics("Manage Preferences");
         });
-       
+
         acceptCookiesButton.addEventListener("click", function () {
             sendToQualtrics("Accept");
         });
@@ -446,5 +444,6 @@
         });
     });
 </script>
+
 </body>
 </html>

@@ -33,8 +33,7 @@
             padding: var(--space-3) var(--space-6);
             background-color: var(--colorGreenStarbucks);
             color: var(--colorWhite);
-            position: relative;
-        }
+       }
 
         header .logo {
             display: flex;
@@ -46,65 +45,21 @@
             width: auto;
         }
 
-        nav {
-            display: none;
-        }
-
-        nav.active {
-            display: block;
-            position: absolute;
-            top: 60px;
-            left: 0;
-            width: 100%;
-            background-color: var(--colorGreenStarbucks);
-            text-align: center;
-        }
-
         nav ul {
             list-style: none;
             margin: 0;
             padding: 0;
+            display: flex;
         }
 
         nav ul li {
-            margin: 10px 0;
+            margin-left: var(--space-3);
         }
 
         nav ul li a {
             color: var(--colorWhite);
             text-decoration: none;
             font-weight: bold;
-        }
-
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .menu-toggle div {
-            width: 25px;
-            height: 3px;
-            background-color: var(--colorWhite);
-            margin: 3px 0;
-        }
-
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: flex;
-            }
-
-            nav {
-                display: none;
-            }
-
-            nav.active {
-                display: block;
-            }
-
-            nav ul {
-                padding: 0;
-            }
         }
 
         .hero {
@@ -316,12 +271,7 @@
         <div class="logo">
             <img src="https://upload.wikimedia.org/wikipedia/sco/d/d3/Starbucks_Corporation_Logo_2011.svg" alt="Starbucks Logo">
         </div>
-        <div class="menu-toggle" id="menu-toggle">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <nav id="nav">
+        <nav>
             <ul>
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Menu</a></li>
@@ -385,8 +335,6 @@
             const cookieConsentBanner = document.getElementById("cookie-consent-banner");
             const acceptCookiesButton = document.getElementById("accept-cookies");
             const rejectCookiesButton = document.getElementById("reject-cookies");
-            const menuToggle = document.getElementById('menu-toggle');
-            const nav = document.getElementById('nav');
 
             // Show preference options and hide initial buttons
             managePreferencesButton.addEventListener("click", function() {
@@ -409,11 +357,6 @@
             // Reject cookies and hide the banner
             rejectCookiesButton.addEventListener("click", function() {
                 cookieConsentBanner.classList.add("fade-out");
-            });
-
-            // Toggle navigation menu
-            menuToggle.addEventListener('click', function() {
-                nav.classList.toggle('active');
             });
         });
     </script>

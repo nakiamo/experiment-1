@@ -302,4 +302,56 @@
             <img src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-96390.jpg" alt="Rewards Card">
             <div class="text">
                 <h2>Column 3</h2>
-                <p>Vestibulum volutpat pretium libero, ut cursus arcu.</p
+                <p>Vestibulum volutpat pretium libero, ut cursus arcu.</p>
+            </div>
+        </div>
+        <div class="column">
+            <img src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-96391.jpg" alt="Bonus Stars">
+            <div class="text">
+                <h2>Column 4</h2>
+                <p>Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 My Inspired Website. All rights reserved. <a href="#">Privacy Policy</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const managePreferencesButton = document.getElementById("manage-preferences");
+            const savePreferencesButton = document.getElementById("save-preferences");
+            const cookieOptionsText = document.getElementById("cookie-options-text");
+            const cookieButtons = document.getElementById("cookie-buttons");
+            const preferenceOptions = document.getElementById("preference-options");
+            const cookieConsentBanner = document.getElementById("cookie-consent-banner");
+            const acceptCookiesButton = document.getElementById("accept-cookies");
+            const rejectCookiesButton = document.getElementById("reject-cookies");
+
+            // Show preference options and hide initial buttons
+            managePreferencesButton.addEventListener("click", function() {
+                cookieOptionsText.style.display = "none";
+                cookieButtons.style.display = "none";
+                preferenceOptions.style.display = "block";
+            });
+
+            // Save preferences and hide the banner
+            savePreferencesButton.addEventListener("click", function() {
+                alert("Your preferences have been saved.");
+                cookieConsentBanner.classList.add("fade-out");
+            });
+
+            // Accept cookies and hide the banner
+            acceptCookiesButton.addEventListener("click", function() {
+                cookieConsentBanner.classList.add("fade-out");
+            });
+
+            // Reject cookies and hide the banner
+            rejectCookiesButton.addEventListener("click", function() {
+                cookieConsentBanner.classList.add("fade-out");
+            });
+        });
+    </script>
+</body>
+</html>

@@ -374,81 +374,80 @@
         <p>&copy; 2024 My Inspired Website. All rights reserved. <a href="#">Privacy Policy</a></p>
     </footer>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-    const managePreferencesButton = document.getElementById("manage-preferences");
-    const savePreferencesButton = document.getElementById("save-preferences");
-    const cookieOptionsText = document.getElementById("cookie-options-text");
-    const cookieButtons = document.getElementById("cookie-buttons");
-    const preferenceOptions = document.getElementById("preference-options");
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
     const cookieConsentBanner = document.getElementById("cookie-consent-banner");
     const acceptCookiesButton = document.getElementById("accept-cookies");
     const rejectCookiesButton = document.getElementById("reject-cookies");
-    const menuToggle = document.getElementById('menu-toggle');
-    const nav = document.getElementById('nav');
-
-    // Show preference options and hide initial buttons
-    managePreferencesButton.addEventListener("click", function() {
-        cookieOptionsText.style.display = "none";
-        cookieButtons.style.display = "none";
-        preferenceOptions.style.display = "block";
-        sendToQualtrics("Manage Preferences");
-    });
-
-    // Save preferences and hide the banner
-    savePreferencesButton.addEventListener("click", function() {
-        alert("Your preferences have been saved.");
-        cookieConsentBanner.classList.add("fade-out");
-    });
-
-    // Accept cookies and hide the banner
-    acceptCookiesButton.addEventListener("click", function() {
-        cookieConsentBanner.classList.add("fade-out");
-        sendToQualtrics("Accept");
-    });
-
-    // Reject cookies and hide the banner
-    rejectCookiesButton.addEventListener("click", function() {
-        cookieConsentBanner.classList.add("fade-out");
-        sendToQualtrics("Reject");
-    });
-
-    // Toggle navigation menu
-    menuToggle.addEventListener('click', function() {
-        nav.classList.toggle('active');
-    });
+    const managePreferencesButton = document.getElementById("manage-preferences");
+    const savePreferencesButton = document.getElementById("save-preferences");
 
     // Function to send data to Qualtrics
     function sendToQualtrics(choice) {
-        const encodedChoice = encodeURIComponent(choice);
-
-        if (window.parent && window.parent.Qualtrics) {
-            window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", encodedChoice);
-            console.log(`Sent to Qualtrics: ${encodedChoice}`);
-        } else {
-            const iframe = document.createElement("iframe");
-            iframe.style.display = "none";
-            iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodedChoice}`;
-            document.body.appendChild(iframe);
-            console.log(`Sent via iframe: ${encodedChoice}`);
+        // Try to access Qualtrics API through the parent window
+        try {
+            if (window.parent && window.parent.Qualtrics) {
+                // Set the embedded data
+                window.parent.Qualtrics.SurveyEngine.setEmbeddedData('CookieChoice', choice);
+                console.log('Successfully sent choice to Qualtrics:', choice);
+                
+                // If using JFE instead of SurveyEngine
+                if (window.parent.QSI) {
+                    window.parent.QSI.API.setEmbeddedData('CookieChoice', choice);
+                }
+            } else {
+                // Fallback for when direct Qualtrics API is not available
+                window.top.postMessage({
+                    action: 'setCookieChoice',
+                    choice: choice
+                }, '*');
+                console.log('Sent choice via postMessage:', choice);
+            }
+        } catch (error) {
+            console.error('Error sending data to Qualtrics:', error);
         }
+
+        // Hide the banner after recording the choice
+        hideBanner();
     }
 
-        // Attach event listeners to the buttons
-        managePreferencesButton.addEventListener("click", function () {
-            sendToQualtrics("Manage Preferences");
-        });
+    // Function to hide the banner
+    function hideBanner() {
+        cookieConsentBanner.classList.add('fade-out');
+        setTimeout(() => {
+            cookieConsentBanner.style.display = 'none';
+        }, 1000);
+    }
 
-        acceptCookiesButton.addEventListener("click", function () {
-            sendToQualtrics("Accept");
-        });
-
-        rejectCookiesButton.addEventListener("click", function () {
-            sendToQualtrics("Reject");
-        });
+    // Event Listeners for the buttons
+    acceptCookiesButton.addEventListener('click', () => {
+        sendToQualtrics('Accept');
     });
-</script>
 
+    rejectCookiesButton.addEventListener('click', () => {
+        sendToQualtrics('Reject');
+    });
+
+    managePreferencesButton.addEventListener('click', () => {
+        sendToQualtrics('Manage');
+    });
+
+    savePreferencesButton.addEventListener('click', () => {
+        // Get the state of preference checkboxes
+        const performanceCookies = document.getElementById('performance-cookies').checked;
+        const targetingCookies = document.getElementById('targeting-cookies').checked;
+        
+        // Create a detailed preferences object
+        const preferences = {
+            performance: performanceCookies,
+            targeting: targetingCookies
+        };
+        
+        sendToQualtrics(JSON.stringify(preferences));
+    });
+});
+</script>
 
 </body>
 </html>

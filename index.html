@@ -383,29 +383,37 @@
     const managePreferencesButton = document.getElementById("manage-preferences");
     const savePreferencesButton = document.getElementById("save-preferences");
 
-    // Function to send data to Qualtrics
+    // Function to send data to Qualtrics using multiple methods
     function sendToQualtrics(choice) {
-        // Try to access Qualtrics API through the parent window
-        try {
-            if (window.parent && window.parent.Qualtrics) {
-                // Set the embedded data
-                window.parent.Qualtrics.SurveyEngine.setEmbeddedData('CookieChoice', choice);
-                console.log('Successfully sent choice to Qualtrics:', choice);
-                
-                // If using JFE instead of SurveyEngine
-                if (window.parent.QSI) {
-                    window.parent.QSI.API.setEmbeddedData('CookieChoice', choice);
-                }
-            } else {
-                // Fallback for when direct Qualtrics API is not available
-                window.top.postMessage({
+        // Method 1: Direct parent window communication
+        if (window.parent) {
+            try {
+                window.parent.postMessage({
                     action: 'setCookieChoice',
                     choice: choice
                 }, '*');
                 console.log('Sent choice via postMessage:', choice);
+            } catch (error) {
+                console.error('Error sending via postMessage:', error);
             }
+        }
+
+        // Method 2: URL Parameter Update
+        try {
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('cookieChoice', choice);
+            window.history.replaceState({}, '', currentUrl);
+            console.log('Updated URL with choice:', choice);
         } catch (error) {
-            console.error('Error sending data to Qualtrics:', error);
+            console.error('Error updating URL:', error);
+        }
+
+        // Method 3: Local Storage (as backup)
+        try {
+            localStorage.setItem('cookieChoice', choice);
+            console.log('Saved choice to localStorage:', choice);
+        } catch (error) {
+            console.error('Error saving to localStorage:', error);
         }
 
         // Hide the banner after recording the choice
@@ -434,16 +442,12 @@
     });
 
     savePreferencesButton.addEventListener('click', () => {
-        // Get the state of preference checkboxes
         const performanceCookies = document.getElementById('performance-cookies').checked;
         const targetingCookies = document.getElementById('targeting-cookies').checked;
-        
-        // Create a detailed preferences object
         const preferences = {
             performance: performanceCookies,
             targeting: targetingCookies
         };
-        
         sendToQualtrics(JSON.stringify(preferences));
     });
 });

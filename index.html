@@ -419,10 +419,9 @@
 
         // Function to send data to Qualtrics
         function sendToQualtrics(choice) {
-            console.log(`Attempting to send data to Qualtrics: ${choice}`);
             let attempts = 0;
             const maxAttempts = 10;
-            const retryInterval = 200; // Retry every 200ms
+            const retryInterval = 500; // Retry every 500ms
 
             function trySettingData() {
                 if (window.parent && window.parent.Qualtrics && window.parent.Qualtrics.SurveyEngine) {
@@ -430,10 +429,13 @@
                         window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", choice);
                         console.log(`Data successfully sent to Qualtrics embedded field: ${choice}`);
                         cookieConsentBanner.classList.add("fade-out");
+                        return;
                     } catch (error) {
                         console.error(`Error setting data in Qualtrics: ${error.message}`);
                     }
-                } else if (attempts < maxAttempts) {
+                }
+
+                if (attempts < maxAttempts) {
                     attempts++;
                     console.log(`Retrying to set data in Qualtrics (Attempt ${attempts}/${maxAttempts})...`);
                     setTimeout(trySettingData, retryInterval);

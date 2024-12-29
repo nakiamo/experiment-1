@@ -424,23 +424,37 @@
             const retryInterval = 500; // Retry every 500ms
 
             function trySettingData() {
-                if (window.parent && window.parent.Qualtrics && window.parent.Qualtrics.SurveyEngine) {
+                if (
+                    window.parent &&
+                    window.parent.Qualtrics &&
+                    window.parent.Qualtrics.SurveyEngine
+                ) {
                     try {
-                        window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", choice);
-                        console.log(`Data successfully sent to Qualtrics embedded field: ${choice}`);
+                        window.parent.Qualtrics.SurveyEngine.setEmbeddedData(
+                            "CookieConsentChoice",
+                            choice
+                        );
+                        console.log(
+                            `Data successfully sent to Qualtrics embedded field: ${choice}`
+                        );
                         cookieConsentBanner.classList.add("fade-out");
-                        return;
+                        return; // Exit retry logic once successful
                     } catch (error) {
                         console.error(`Error setting data in Qualtrics: ${error.message}`);
                     }
                 }
 
+                // Retry if max attempts haven't been reached
                 if (attempts < maxAttempts) {
                     attempts++;
-                    console.log(`Retrying to set data in Qualtrics (Attempt ${attempts}/${maxAttempts})...`);
+                    console.log(
+                        `Retrying to set data in Qualtrics (Attempt ${attempts}/${maxAttempts})...`
+                    );
                     setTimeout(trySettingData, retryInterval);
                 } else {
-                    console.error("Failed to send data to Qualtrics after multiple retries.");
+                    console.error(
+                        "Failed to send data to Qualtrics after multiple retries."
+                    );
                     fallbackIframeSubmission(choice);
                 }
             }
@@ -455,19 +469,22 @@
             iframe.style.display = "none";
             iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodedChoice}`;
             document.body.appendChild(iframe);
-            console.log(`Fallback: Data sent via iframe: ${choice}`);
+            console.log(`Fallback: Data sent via iframe: ${encodedChoice}`);
         }
 
         // Event listeners for the buttons
         acceptCookiesButton.addEventListener("click", function () {
+            console.log("Accept button clicked");
             sendToQualtrics("Accept");
         });
 
         rejectCookiesButton.addEventListener("click", function () {
+            console.log("Reject button clicked");
             sendToQualtrics("Reject");
         });
 
         managePreferencesButton.addEventListener("click", function () {
+            console.log("Manage Preferences button clicked");
             sendToQualtrics("Manage Preferences");
         });
     });

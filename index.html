@@ -418,35 +418,32 @@
         nav.classList.toggle('active');
     });
 
-    // Function to send data to Qualtrics
-    function sendToQualtrics(choice) {
-        const encodedChoice = encodeURIComponent(choice);
-
-        if (window.parent && window.parent.Qualtrics) {
-            window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", encodedChoice);
-            console.log(`Sent to Qualtrics: ${encodedChoice}`);
-        } else {
-            const iframe = document.createElement("iframe");
-            iframe.style.display = "none";
-            iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodedChoice}`;
-            document.body.appendChild(iframe);
-            console.log(`Sent via iframe: ${encodedChoice}`);
-        }
-    }
-
-        // Attach event listeners to the buttons
-        managePreferencesButton.addEventListener("click", function () {
-            sendToQualtrics("Manage Preferences");
-        });
-
-        acceptCookiesButton.addEventListener("click", function () {
-            sendToQualtrics("Accept");
-        });
-
-        rejectCookiesButton.addEventListener("click", function () {
-            sendToQualtrics("Reject");
-        });
     });
+</script>
+
+<script>
+    document.getElementById('accept-cookies').addEventListener('click', () => logConsentAction('Accept'));
+    document.getElementById('reject-cookies').addEventListener('click', () => logConsentAction('Reject'));
+    document.getElementById('manage-preferences').addEventListener('click', () => logConsentAction('Manage Preferences'));
+
+    function logConsentAction(action) {
+        // Log the action to the console (for testing purposes)
+        console.log(`Cookie consent action: ${action}`);
+
+        // Send the action to Qualtrics using embedded data
+        const qEmbedUrl = "https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG"; // Update with your survey's URL
+        const actionData = {
+            consent_action: action
+        };
+
+        fetch(qEmbedUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(actionData)
+        }).catch(error => console.error('Error sending consent action:', error));
+    }
 </script>
 
 

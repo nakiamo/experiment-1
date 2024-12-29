@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self' https://pitt.co1.qualtrics.com;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inspired Webpage</title>
@@ -376,49 +375,79 @@
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const cookieConsentBanner = document.getElementById("cookie-consent-banner");
-            const acceptCookiesButton = document.getElementById("accept-cookies");
-            const rejectCookiesButton = document.getElementById("reject-cookies");
-            const managePreferencesButton = document.getElementById("manage-preferences");
+        document.addEventListener("DOMContentLoaded", function() {
+    const managePreferencesButton = document.getElementById("manage-preferences");
+    const savePreferencesButton = document.getElementById("save-preferences");
+    const cookieOptionsText = document.getElementById("cookie-options-text");
+    const cookieButtons = document.getElementById("cookie-buttons");
+    const preferenceOptions = document.getElementById("preference-options");
+    const cookieConsentBanner = document.getElementById("cookie-consent-banner");
+    const acceptCookiesButton = document.getElementById("accept-cookies");
+    const rejectCookiesButton = document.getElementById("reject-cookies");
+    const menuToggle = document.getElementById('menu-toggle');
+    const nav = document.getElementById('nav');
 
-            function sendToQualtrics(choice) {
-                console.log(`Choice made: ${choice}`);
+    // Show preference options and hide initial buttons
+    managePreferencesButton.addEventListener("click", function() {
+        cookieOptionsText.style.display = "none";
+        cookieButtons.style.display = "none";
+        preferenceOptions.style.display = "block";
+        sendToQualtrics("Manage Preferences");
+    });
 
-                if (window.parent && window.parent.Qualtrics) {
-                    try {
-                        window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", choice);
-                        console.log(`Data sent to Qualtrics: ${choice}`);
-                    } catch (error) {
-                        console.error("Error sending data to Qualtrics SurveyEngine:", error);
-                    }
-                } else {
-                    // Fallback: Send data via an iframe to Qualtrics survey link
-                    const fallbackURL = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodeURIComponent(choice)}`;
-                    const iframe = document.createElement("iframe");
-                    iframe.style.display = "none";
-                    iframe.src = fallbackURL;
-                    document.body.appendChild(iframe);
-                    console.log(`Fallback data sent via iframe: ${fallbackURL}`);
-                }
+    // Save preferences and hide the banner
+    savePreferencesButton.addEventListener("click", function() {
+        alert("Your preferences have been saved.");
+        cookieConsentBanner.classList.add("fade-out");
+    });
 
-                // Hide the banner
-                cookieConsentBanner.classList.add("fade-out");
-            }
+    // Accept cookies and hide the banner
+    acceptCookiesButton.addEventListener("click", function() {
+        cookieConsentBanner.classList.add("fade-out");
+        sendToQualtrics("Accept");
+    });
 
-            acceptCookiesButton.addEventListener("click", function () {
-                sendToQualtrics("Accept");
-            });
+    // Reject cookies and hide the banner
+    rejectCookiesButton.addEventListener("click", function() {
+        cookieConsentBanner.classList.add("fade-out");
+        sendToQualtrics("Reject");
+    });
 
-            rejectCookiesButton.addEventListener("click", function () {
-                sendToQualtrics("Reject");
-            });
+    // Toggle navigation menu
+    menuToggle.addEventListener('click', function() {
+        nav.classList.toggle('active');
+    });
 
-            managePreferencesButton.addEventListener("click", function () {
-                sendToQualtrics("Manage Preferences");
-            });
+    // Function to send data to Qualtrics
+    function sendToQualtrics(choice) {
+        const encodedChoice = encodeURIComponent(choice);
+
+        if (window.parent && window.parent.Qualtrics) {
+            window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", encodedChoice);
+            console.log(`Sent to Qualtrics: ${encodedChoice}`);
+        } else {
+            const iframe = document.createElement("iframe");
+            iframe.style.display = "none";
+            iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodedChoice}`;
+            document.body.appendChild(iframe);
+            console.log(`Sent via iframe: ${encodedChoice}`);
+        }
+    }
+
+        // Attach event listeners to the buttons
+        managePreferencesButton.addEventListener("click", function () {
+            sendToQualtrics("Manage Preferences");
         });
-    </script>
+
+        acceptCookiesButton.addEventListener("click", function () {
+            sendToQualtrics("Accept");
+        });
+
+        rejectCookiesButton.addEventListener("click", function () {
+            sendToQualtrics("Reject");
+        });
+    });
+</script>
 
 
 </body>

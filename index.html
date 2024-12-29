@@ -418,29 +418,40 @@
 
         // Function to send data to Qualtrics
         function sendToQualtrics(choice) {
-            console.log(`User choice: ${choice}`);
+            console.log(`Attempting to send data: ${choice}`);
             const encodedChoice = encodeURIComponent(choice);
+            const maxRetries = 10;
+            let attempts = 0;
 
-            try {
-                // Check if Qualtrics SurveyEngine is available
+            // Retry mechanism for setting embedded data
+            function trySettingData() {
                 if (window.parent && window.parent.Qualtrics && window.parent.Qualtrics.SurveyEngine) {
-                    console.log("Qualtrics SurveyEngine detected.");
-                    // Set the embedded data
-                    window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", choice);
-                    console.log(`Data sent to Qualtrics embedded field: ${choice}`);
+                    try {
+                        window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", choice);
+                        console.log(`Data successfully sent to Qualtrics embedded field: ${choice}`);
+                    } catch (error) {
+                        console.error(`Error setting data in Qualtrics: ${error.message}`);
+                    }
+                } else if (attempts < maxRetries) {
+                    attempts++;
+                    console.log(`Retry ${attempts}/${maxRetries}: Qualtrics SurveyEngine not yet available.`);
+                    setTimeout(trySettingData, 200); // Retry after 200ms
                 } else {
-                    throw new Error("Qualtrics SurveyEngine is unavailable. Using fallback mechanism.");
+                    console.error("Failed to send data to Qualtrics after multiple retries.");
+                    fallbackIframeSubmission(choice, encodedChoice);
                 }
-            } catch (error) {
-                console.error(error.message);
-
-                // Fallback: Send data via iframe
-                const iframe = document.createElement("iframe");
-                iframe.style.display = "none";
-                iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodedChoice}`;
-                document.body.appendChild(iframe);
-                console.log(`Fallback data sent via iframe: ${encodedChoice}`);
             }
+
+            trySettingData();
+        }
+
+        // Fallback: Send data via iframe
+        function fallbackIframeSubmission(choice, encodedChoice) {
+            const iframe = document.createElement("iframe");
+            iframe.style.display = "none";
+            iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodedChoice}`;
+            document.body.appendChild(iframe);
+            console.log(`Fallback: Data sent via iframe: ${choice}`);
         }
 
         // Attach event listeners to send data to Qualtrics

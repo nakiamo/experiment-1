@@ -418,15 +418,18 @@
 
         // Function to send data to Qualtrics
         function sendToQualtrics(choice) {
+            console.log(`User choice: ${choice}`);
             const encodedChoice = encodeURIComponent(choice);
 
             try {
-                // Check if Qualtrics API is available
+                // Check if Qualtrics SurveyEngine is available
                 if (window.parent && window.parent.Qualtrics && window.parent.Qualtrics.SurveyEngine) {
+                    console.log("Qualtrics SurveyEngine detected.");
+                    // Set the embedded data
                     window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", choice);
-                    console.log(`Embedded data set in Qualtrics: ${choice}`);
+                    console.log(`Data sent to Qualtrics embedded field: ${choice}`);
                 } else {
-                    throw new Error("Qualtrics SurveyEngine is unavailable. Falling back to iframe.");
+                    throw new Error("Qualtrics SurveyEngine is unavailable. Using fallback mechanism.");
                 }
             } catch (error) {
                 console.error(error.message);
@@ -436,7 +439,7 @@
                 iframe.style.display = "none";
                 iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodedChoice}`;
                 document.body.appendChild(iframe);
-                console.log(`Fallback: Data sent via iframe: ${encodedChoice}`);
+                console.log(`Fallback data sent via iframe: ${encodedChoice}`);
             }
         }
 
@@ -454,6 +457,7 @@
         });
     });
 </script>
+
 
 </body>
 </html>

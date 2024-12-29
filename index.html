@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self' https://pitt.co1.qualtrics.com;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inspired Webpage</title>
@@ -420,19 +421,29 @@
 
     // Function to send data to Qualtrics
     function sendToQualtrics(choice) {
-        const encodedChoice = encodeURIComponent(choice);
+    const encodedChoice = encodeURIComponent(choice);
+    console.log(`Attempting to send data: ${encodedChoice}`);
 
-        if (window.parent && window.parent.Qualtrics) {
+    if (window.parent && window.parent.Qualtrics) {
+        try {
             window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", encodedChoice);
-            console.log(`Sent to Qualtrics: ${encodedChoice}`);
-        } else {
+            console.log(`Data sent to Qualtrics: ${encodedChoice}`);
+        } catch (error) {
+            console.error("Error sending data to Qualtrics SurveyEngine:", error);
+        }
+    } else {
+        try {
             const iframe = document.createElement("iframe");
             iframe.style.display = "none";
             iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodedChoice}`;
             document.body.appendChild(iframe);
-            console.log(`Sent via iframe: ${encodedChoice}`);
+            console.log(`Data sent via iframe: ${encodedChoice}`);
+        } catch (error) {
+            console.error("Error creating iframe for data transmission:", error);
         }
     }
+}
+
 
         // Attach event listeners to the buttons
         managePreferencesButton.addEventListener("click", function () {

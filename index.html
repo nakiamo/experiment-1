@@ -412,33 +412,34 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const managePreferencesButton = document.getElementById("manage-preferences");
+        const cookieConsentBanner = document.getElementById("cookie-consent-banner");
         const acceptCookiesButton = document.getElementById("accept-cookies");
         const rejectCookiesButton = document.getElementById("reject-cookies");
+        const managePreferencesButton = document.getElementById("manage-preferences");
 
         // Function to send data to Qualtrics
         function sendToQualtrics(choice) {
-            console.log(`Attempting to send data: ${choice}`);
-            const encodedChoice = encodeURIComponent(choice);
-            const maxRetries = 10;
+            console.log(`Attempting to send data to Qualtrics: ${choice}`);
             let attempts = 0;
+            const maxAttempts = 10;
+            const retryInterval = 200; // Retry every 200ms
 
-            // Retry mechanism for setting embedded data
             function trySettingData() {
                 if (window.parent && window.parent.Qualtrics && window.parent.Qualtrics.SurveyEngine) {
                     try {
                         window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", choice);
                         console.log(`Data successfully sent to Qualtrics embedded field: ${choice}`);
+                        cookieConsentBanner.classList.add("fade-out");
                     } catch (error) {
                         console.error(`Error setting data in Qualtrics: ${error.message}`);
                     }
-                } else if (attempts < maxRetries) {
+                } else if (attempts < maxAttempts) {
                     attempts++;
-                    console.log(`Retry ${attempts}/${maxRetries}: Qualtrics SurveyEngine not yet available.`);
-                    setTimeout(trySettingData, 200); // Retry after 200ms
+                    console.log(`Retrying to set data in Qualtrics (Attempt ${attempts}/${maxAttempts})...`);
+                    setTimeout(trySettingData, retryInterval);
                 } else {
                     console.error("Failed to send data to Qualtrics after multiple retries.");
-                    fallbackIframeSubmission(choice, encodedChoice);
+                    fallbackIframeSubmission(choice);
                 }
             }
 
@@ -446,7 +447,8 @@
         }
 
         // Fallback: Send data via iframe
-        function fallbackIframeSubmission(choice, encodedChoice) {
+        function fallbackIframeSubmission(choice) {
+            const encodedChoice = encodeURIComponent(choice);
             const iframe = document.createElement("iframe");
             iframe.style.display = "none";
             iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodedChoice}`;
@@ -454,17 +456,17 @@
             console.log(`Fallback: Data sent via iframe: ${choice}`);
         }
 
-        // Attach event listeners to send data to Qualtrics
-        managePreferencesButton.addEventListener("click", function () {
-            sendToQualtrics("Manage Preferences");
-        });
-
+        // Event listeners for the buttons
         acceptCookiesButton.addEventListener("click", function () {
             sendToQualtrics("Accept");
         });
 
         rejectCookiesButton.addEventListener("click", function () {
             sendToQualtrics("Reject");
+        });
+
+        managePreferencesButton.addEventListener("click", function () {
+            sendToQualtrics("Manage Preferences");
         });
     });
 </script>

@@ -419,11 +419,12 @@
 
         // Function to send data to Qualtrics
         function sendToQualtrics(choice) {
-            let attempts = 0;
             const maxAttempts = 10;
+            let attempts = 0;
             const retryInterval = 500; // Retry every 500ms
 
-            function trySettingData() {
+            function trySendingData() {
+                // Check if Qualtrics SurveyEngine is available
                 if (
                     window.parent &&
                     window.parent.Qualtrics &&
@@ -434,32 +435,30 @@
                             "CookieConsentChoice",
                             choice
                         );
-                        console.log(
-                            `Data successfully sent to Qualtrics embedded field: ${choice}`
-                        );
-                        cookieConsentBanner.classList.add("fade-out");
-                        return; // Exit retry logic once successful
+                        console.log(`Choice '${choice}' successfully sent to Qualtrics.`);
+                        fadeOutBanner();
+                        return;
                     } catch (error) {
-                        console.error(`Error setting data in Qualtrics: ${error.message}`);
+                        console.error(
+                            `Error while sending data to Qualtrics: ${error.message}`
+                        );
                     }
                 }
 
-                // Retry if max attempts haven't been reached
+                // Retry logic
                 if (attempts < maxAttempts) {
                     attempts++;
-                    console.log(
-                        `Retrying to set data in Qualtrics (Attempt ${attempts}/${maxAttempts})...`
-                    );
-                    setTimeout(trySettingData, retryInterval);
+                    console.log(`Retry ${attempts}/${maxAttempts} to send data to Qualtrics.`);
+                    setTimeout(trySendingData, retryInterval);
                 } else {
                     console.error(
-                        "Failed to send data to Qualtrics after multiple retries."
+                        `Failed to send data to Qualtrics after ${maxAttempts} attempts.`
                     );
                     fallbackIframeSubmission(choice);
                 }
             }
 
-            trySettingData();
+            trySendingData();
         }
 
         // Fallback: Send data via iframe
@@ -469,10 +468,16 @@
             iframe.style.display = "none";
             iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodedChoice}`;
             document.body.appendChild(iframe);
-            console.log(`Fallback: Data sent via iframe: ${encodedChoice}`);
+            console.log(`Fallback mechanism used: Data sent via iframe as '${choice}'.`);
+            fadeOutBanner();
         }
 
-        // Event listeners for the buttons
+        // Helper function to fade out the cookie consent banner
+        function fadeOutBanner() {
+            cookieConsentBanner.classList.add("fade-out");
+        }
+
+        // Event listeners for buttons
         acceptCookiesButton.addEventListener("click", function () {
             console.log("Accept button clicked");
             sendToQualtrics("Accept");

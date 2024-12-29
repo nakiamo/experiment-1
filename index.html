@@ -382,6 +382,9 @@
     const rejectCookiesButton = document.getElementById("reject-cookies");
     const managePreferencesButton = document.getElementById("manage-preferences");
     const savePreferencesButton = document.getElementById("save-preferences");
+    const cookieOptionsText = document.getElementById("cookie-options-text");
+    const cookieButtons = document.getElementById("cookie-buttons");
+    const preferenceOptions = document.getElementById("preference-options");
 
     // Function to send data to Qualtrics using multiple methods
     function sendToQualtrics(choice) {
@@ -415,9 +418,6 @@
         } catch (error) {
             console.error('Error saving to localStorage:', error);
         }
-
-        // Hide the banner after recording the choice
-        hideBanner();
     }
 
     // Function to hide the banner
@@ -431,24 +431,41 @@
     // Event Listeners for the buttons
     acceptCookiesButton.addEventListener('click', () => {
         sendToQualtrics('Accept');
+        hideBanner();
     });
 
     rejectCookiesButton.addEventListener('click', () => {
         sendToQualtrics('Reject');
+        hideBanner();
     });
 
+    // Show preference options when "Manage My Preferences" is clicked
     managePreferencesButton.addEventListener('click', () => {
-        sendToQualtrics('Manage');
+        cookieOptionsText.style.display = "none";
+        cookieButtons.style.display = "none";
+        preferenceOptions.style.display = "block";
+        // Note: We don't send data to Qualtrics yet, as the user hasn't made their final choice
     });
 
+    // Handle saving preferences
     savePreferencesButton.addEventListener('click', () => {
+        // Get the state of preference checkboxes
         const performanceCookies = document.getElementById('performance-cookies').checked;
         const targetingCookies = document.getElementById('targeting-cookies').checked;
-        const preferences = {
-            performance: performanceCookies,
-            targeting: targetingCookies
-        };
-        sendToQualtrics(JSON.stringify(preferences));
+        
+        // Create a detailed preferences string
+        let preferences = [];
+        if (performanceCookies) preferences.push("Performance");
+        // Always include Strictly as it's mandatory
+        preferences.push("Strictly");
+        if (targetingCookies) preferences.push("Targeting");
+        
+        // Send the preferences to Qualtrics
+        const choiceString = preferences.length > 0 ? preferences.join(", ") : "None";
+        sendToQualtrics(choiceString);
+        
+        // Hide the banner
+        hideBanner();
     });
 });
 </script>

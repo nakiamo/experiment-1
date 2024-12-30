@@ -71,10 +71,12 @@
             font-weight: bold;
         }
 
+        /* Base styles for menu toggle button */
         .menu-toggle {
             display: none;
             flex-direction: column;
             cursor: pointer;
+            z-index: 1000;
         }
 
         .menu-toggle div {
@@ -82,38 +84,83 @@
             height: 3px;
             background-color: var(--colorWhite);
             margin: 3px 0;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
+        /* Base styles for navigation */
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: var(--space-3);
+        }
+
+        nav ul li a {
+            color: var(--colorWhite);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Mobile menu styles */
         @media (max-width: 768px) {
             nav {
                 display: none;
             }
 
-            nav.active {
-                display: block;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                width: 100%;
-                background-color: var(--colorGreenStarbucks);
-                text-align: center;
-            }
-
-            nav ul {
-                flex-direction: column;
-                padding: 0;
-            }
-
             .menu-toggle {
                 display: flex;
             }
-        }
 
-            .menu-toggle div {
-                transition: all 0.3s ease;
-                 position: relative;
+            /* Active menu state */
+            nav.active {
+                display: block !important;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: rgba(30, 57, 50, 0.8); /* Reduced opacity here */
+                backdrop-filter: blur(4px); /* Reduced blur */
+                -webkit-backdrop-filter: blur(4px);
+                animation: slideDown 0.3s ease-out;
+                z-index: 999;
             }
 
+            nav.active ul {
+                flex-direction: column;
+                padding: 20px 0;
+            }
+
+            nav.active ul li {
+                margin: 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            nav.active ul li:last-child {
+                border-bottom: none;
+            }
+
+            nav.active ul li a {
+                display: block;
+                padding: 15px 20px;
+                transition: background-color 0.3s ease;
+                color: white; /* Ensuring text remains visible */
+            }
+
+            nav.active ul li a:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            /* Hamburger menu animation */
             .menu-toggle div.active:nth-child(1) {
                 transform: rotate(45deg) translate(5px, 5px);
             }
@@ -125,39 +172,19 @@
             .menu-toggle div.active:nth-child(3) {
                 transform: rotate(-45deg) translate(5px, -5px);
             }
+        }
 
-            nav.active {
-                display: block !important;
-                animation: slideDown 0.3s ease-out;
+        /* Slide down animation */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
             }
-
-            @keyframes slideDown {
-                from {
-                    opacity: 0;
-                    transform: translateY(-10px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
-
-            nav.active ul {
-                padding: 20px 0;
-            }
-
-            nav.active ul li {
-                margin: 10px 0;
-            }
-
-            nav.active ul li a {
-                display: block;
-                padding: 10px 20px;
-            }
-
-            nav.active ul li a:hover {
-                background-color: rgba(255, 255, 255, 0.1);
-            }
+        }
 
         .hero {
             background-image: url('https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-96387.jpg');

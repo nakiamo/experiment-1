@@ -9,6 +9,7 @@
             --colorWhite: #fff;
             --colorNeutralCool: #f3f1e7;
             --colorGreenStarbucks: #1e3932;
+            --colorlightGreenStarbucks: #00704A;
             --colorBlack: #000;
             --colorTextBackground: #d4e9e2;
             --textSize2: 1.4rem;
@@ -45,6 +46,7 @@
             height: 50px;
             width: auto;
         }
+        
 
         nav {
             display: flex;
@@ -217,6 +219,13 @@
             color: var(--colorGreenStarbucks);
             text-decoration: none;
         }
+        
+        .starbucks-text {
+            text-transform: uppercase;
+            font-family: 'SoDo Sans Bold', Arial, sans-serif;
+            color: #00704A;
+        font-weight: bold;
+        }
 
         /* Cookie Consent Styles */
         #cookie-consent-banner {
@@ -249,7 +258,7 @@
         }
 
         #cookie-consent-box button {
-            background-color: var(--colorGreenStarbucks);
+            background-color: var(--colorlightGreenStarbucks);
             color: var(--colorWhite);
             border: none;
             padding: 0.5rem 1rem;
@@ -303,7 +312,7 @@
                 <label><input type="checkbox" id="targeting-cookies"> Targeting Cookies</label>
                 <button id="save-preferences">Save Preferences</button>
             </div>
-            <p id="cookie-options-text">Starbucks olarak, güvenilir ve gelişmiş bir alışveriş deneyimi sunmak amacıyla çerez kullanıyoruz. Tümünü Reddet seçeneğine tıklaman halinde tercih ve ilgi alanlarına yönelik maalesef sana özel bir deneyim sunamayacağız. "Seçenekleri Yönet" öğesine tıklayarak çerezlere ilişkin onay ayarlarını değiştirebilirsin. Çerezler vasıtasıyla hangi kişisel verileri topladığımız ve nasıl kullandığımız hakkında aydınlatma metnine buradan ulaşabilirsin.</p>
+            <p id="cookie-options-text"><span class="starbucks-text">Starbucks</span> olarak, güvenilir ve gelişmiş bir alışveriş deneyimi sunmak amacıyla çerez kullanıyoruz. Tümünü Reddet seçeneğine tıklaman halinde tercih ve ilgi alanlarına yönelik maalesef sana özel bir deneyim sunamayacağız. "Seçenekleri Yönet" öğesine tıklayarak çerezlere ilişkin onay ayarlarını değiştirebilirsin. Çerezler vasıtasıyla hangi kişisel verileri topladığımız ve nasıl kullandığımız hakkında aydınlatma metnine buradan ulaşabilirsin.</p>
             <div id="cookie-buttons">
                 <button id="accept-cookies">Accept</button>
                 <button id="reject-cookies">Reject</button>

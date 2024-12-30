@@ -9,6 +9,7 @@
             --colorWhite: #fff;
             --colorNeutralCool: #f3f1e7;
             --colorGreenStarbucks: #1e3932;
+            --colorlightGreenStarbucks: #00704A;
             --colorBlack: #000;
             --colorTextBackground: #d4e9e2;
             --textSize2: 1.4rem;
@@ -45,6 +46,7 @@
             height: 50px;
             width: auto;
         }
+        
 
         nav {
             display: flex;
@@ -217,6 +219,13 @@
             color: var(--colorGreenStarbucks);
             text-decoration: none;
         }
+        
+        .starbucks-text {
+            text-transform: uppercase;
+            font-family: 'SoDo Sans Bold', Arial, sans-serif;
+            color: #00704A;
+        font-weight: bold;
+        }
 
         /* Cookie Consent Styles */
         #cookie-consent-banner {
@@ -237,6 +246,7 @@
             padding: 2rem;
             border-radius: 8px;
             text-align: center;
+            font-size:small;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             max-width: 400px;
             width: 90%;
@@ -248,7 +258,7 @@
         }
 
         #cookie-consent-box button {
-            background-color: var(--colorGreenStarbucks);
+            background-color: var(--colorlightGreenStarbucks);
             color: var(--colorWhite);
             border: none;
             padding: 0.5rem 1rem;
@@ -295,14 +305,14 @@
 <body>
     <div id="cookie-consent-banner">
         <div id="cookie-consent-box">
-            <h2>Manage Your Preferences</h2>
+            <h2>Sana Özel Bir Deneyim</h2>
             <div id="preference-options">
                 <label><input type="checkbox" id="performance-cookies"> Performance Cookies</label>
                 <label><input type="checkbox" id="strictly-necessary-cookies" checked disabled> Strictly Necessary Cookies</label>
                 <label><input type="checkbox" id="targeting-cookies"> Targeting Cookies</label>
                 <button id="save-preferences">Save Preferences</button>
             </div>
-            <p id="cookie-options-text">This website uses cookies to ensure you get the best experience. By using this site, you consent to the use of cookies.</p>
+            <p id="cookie-options-text"><span class="starbucks-text">Starbucks</span> olarak, güvenilir ve gelişmiş bir alışveriş deneyimi sunmak amacıyla çerez kullanıyoruz. Tümünü Reddet seçeneğine tıklaman halinde tercih ve ilgi alanlarına yönelik maalesef sana özel bir deneyim sunamayacağız. "Seçenekleri Yönet" öğesine tıklayarak çerezlere ilişkin onay ayarlarını değiştirebilirsin. Çerezler vasıtasıyla hangi kişisel verileri topladığımız ve nasıl kullandığımız hakkında aydınlatma metnine buradan ulaşabilirsin.</p>
             <div id="cookie-buttons">
                 <button id="accept-cookies">Accept</button>
                 <button id="reject-cookies">Reject</button>
@@ -322,10 +332,10 @@
         </div>
         <nav id="nav">
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Menu</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="#">Kahveler</a></li>
+                <li><a href="#">Mağazalar</a></li>
+                <li><a href="#">Hakkımızda</a></li>
+                <li><a href="#">İletişim</a></li>
             </ul>
         </nav>
     </header>
@@ -374,81 +384,147 @@
         <p>&copy; 2024 My Inspired Website. All rights reserved. <a href="#">Privacy Policy</a></p>
     </footer>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
+<script>document.addEventListener("DOMContentLoaded", function() {
+    const menuToggle = document.getElementById("menu-toggle");
+    const nav = document.getElementById("nav");
+    
+    // Toggle menu when hamburger icon is clicked
+    menuToggle.addEventListener("click", function() {
+        nav.classList.toggle("active");
+        
+        // Optional: Add animation to hamburger icon
+        const bars = menuToggle.getElementsByTagName("div");
+        for (let bar of bars) {
+            bar.classList.toggle("active");
+        }
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener("click", function(event) {
+        const isClickInsideMenu = nav.contains(event.target);
+        const isClickOnToggle = menuToggle.contains(event.target);
+        
+        if (!isClickInsideMenu && !isClickOnToggle && nav.classList.contains("active")) {
+            nav.classList.remove("active");
+            
+            // Optional: Reset hamburger icon
+            const bars = menuToggle.getElementsByTagName("div");
+            for (let bar of bars) {
+                bar.classList.remove("active");
+            }
+        }
+    });
+    
+    // Close menu when window is resized above mobile breakpoint
+    window.addEventListener("resize", function() {
+        if (window.innerWidth > 768 && nav.classList.contains("active")) {
+            nav.classList.remove("active");
+            
+            // Optional: Reset hamburger icon
+            const bars = menuToggle.getElementsByTagName("div");
+            for (let bar of bars) {
+                bar.classList.remove("active");
+            }
+        }
+    });
+});
+
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const cookieConsentBanner = document.getElementById("cookie-consent-banner");
+    const acceptCookiesButton = document.getElementById("accept-cookies");
+    const rejectCookiesButton = document.getElementById("reject-cookies");
     const managePreferencesButton = document.getElementById("manage-preferences");
     const savePreferencesButton = document.getElementById("save-preferences");
     const cookieOptionsText = document.getElementById("cookie-options-text");
     const cookieButtons = document.getElementById("cookie-buttons");
     const preferenceOptions = document.getElementById("preference-options");
-    const cookieConsentBanner = document.getElementById("cookie-consent-banner");
-    const acceptCookiesButton = document.getElementById("accept-cookies");
-    const rejectCookiesButton = document.getElementById("reject-cookies");
-    const menuToggle = document.getElementById('menu-toggle');
-    const nav = document.getElementById('nav');
 
-    // Show preference options and hide initial buttons
-    managePreferencesButton.addEventListener("click", function() {
-        cookieOptionsText.style.display = "none";
-        cookieButtons.style.display = "none";
-        preferenceOptions.style.display = "block";
-        sendToQualtrics("Manage Preferences");
-    });
-
-    // Save preferences and hide the banner
-    savePreferencesButton.addEventListener("click", function() {
-        alert("Your preferences have been saved.");
-        cookieConsentBanner.classList.add("fade-out");
-    });
-
-    // Accept cookies and hide the banner
-    acceptCookiesButton.addEventListener("click", function() {
-        cookieConsentBanner.classList.add("fade-out");
-        sendToQualtrics("Accept");
-    });
-
-    // Reject cookies and hide the banner
-    rejectCookiesButton.addEventListener("click", function() {
-        cookieConsentBanner.classList.add("fade-out");
-        sendToQualtrics("Reject");
-    });
-
-    // Toggle navigation menu
-    menuToggle.addEventListener('click', function() {
-        nav.classList.toggle('active');
-    });
-
-    // Function to send data to Qualtrics
+    // Function to send data to Qualtrics using multiple methods
     function sendToQualtrics(choice) {
-        const encodedChoice = encodeURIComponent(choice);
+        // Method 1: Direct parent window communication
+        if (window.parent) {
+            try {
+                window.parent.postMessage({
+                    action: 'setCookieChoice',
+                    choice: choice
+                }, '*');
+                console.log('Sent choice via postMessage:', choice);
+            } catch (error) {
+                console.error('Error sending via postMessage:', error);
+            }
+        }
 
-        if (window.parent && window.parent.Qualtrics) {
-            window.parent.Qualtrics.SurveyEngine.setEmbeddedData("CookieConsentChoice", encodedChoice);
-            console.log(`Sent to Qualtrics: ${encodedChoice}`);
-        } else {
-            const iframe = document.createElement("iframe");
-            iframe.style.display = "none";
-            iframe.src = `https://pitt.co1.qualtrics.com/jfe/form/SV_82qEVmKh9UVcJIG?CookieConsentChoice=${encodedChoice}`;
-            document.body.appendChild(iframe);
-            console.log(`Sent via iframe: ${encodedChoice}`);
+        // Method 2: URL Parameter Update
+        try {
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('cookieChoice', choice);
+            window.history.replaceState({}, '', currentUrl);
+            console.log('Updated URL with choice:', choice);
+        } catch (error) {
+            console.error('Error updating URL:', error);
+        }
+
+        // Method 3: Local Storage (as backup)
+        try {
+            localStorage.setItem('cookieChoice', choice);
+            console.log('Saved choice to localStorage:', choice);
+        } catch (error) {
+            console.error('Error saving to localStorage:', error);
         }
     }
 
-        // Attach event listeners to the buttons
-        managePreferencesButton.addEventListener("click", function () {
-            sendToQualtrics("Manage Preferences");
-        });
+    // Function to hide the banner
+    function hideBanner() {
+        cookieConsentBanner.classList.add('fade-out');
+        setTimeout(() => {
+            cookieConsentBanner.style.display = 'none';
+        }, 1000);
+    }
 
-        acceptCookiesButton.addEventListener("click", function () {
-            sendToQualtrics("Accept");
-        });
-
-        rejectCookiesButton.addEventListener("click", function () {
-            sendToQualtrics("Reject");
-        });
+    // Event Listeners for the buttons
+    acceptCookiesButton.addEventListener('click', () => {
+        sendToQualtrics('Accept');
+        hideBanner();
     });
-</script>
 
+    rejectCookiesButton.addEventListener('click', () => {
+        sendToQualtrics('Reject');
+        hideBanner();
+    });
+
+    // Show preference options when "Manage My Preferences" is clicked
+    managePreferencesButton.addEventListener('click', () => {
+        cookieOptionsText.style.display = "none";
+        cookieButtons.style.display = "none";
+        preferenceOptions.style.display = "block";
+        // Note: We don't send data to Qualtrics yet, as the user hasn't made their final choice
+    });
+
+    // Handle saving preferences
+    savePreferencesButton.addEventListener('click', () => {
+        // Get the state of preference checkboxes
+        const performanceCookies = document.getElementById('performance-cookies').checked;
+        const targetingCookies = document.getElementById('targeting-cookies').checked;
+        
+        // Create a detailed preferences string
+        let preferences = [];
+        if (performanceCookies) preferences.push("Performance");
+        // Always include Strictly as it's mandatory
+        preferences.push("Strictly");
+        if (targetingCookies) preferences.push("Targeting");
+        
+        // Send the preferences to Qualtrics
+        const choiceString = preferences.length > 0 ? preferences.join(", ") : "None";
+        sendToQualtrics(choiceString);
+        
+        // Hide the banner
+        hideBanner();
+    });
+});
+</script>
 
 </body>
 </html>

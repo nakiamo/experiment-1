@@ -3,4 +3,3 @@ https://stackoverflow.com/questions/38497334/how-to-run-html-file-on-localhost
 You can use python -m http.server. By default the local server will run on port 8000. If you would like to change this, simply add the port number python -m http.server 1234
 If you are using python 2 (instead of 3), the equivalent command is python -m 
 
-https://nakiamo.github.io/experiment-3/assets/images/espresso-house-logo.svg

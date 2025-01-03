@@ -16,6 +16,7 @@
             --lineHeightNormal: 1.5;
             --space-3: 1.6rem;
             --space-6: 4rem;
+            --space-5: 0.6rem;
         }
 
         body {
@@ -31,7 +32,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: var(--space-3) var(--space-6);
+            padding: var(--space-5) var(--space-6);
             background-color: var(--colorGreenStarbucks);
             color: var(--colorWhite);
             position: relative;
@@ -43,7 +44,7 @@
         }
 
         header .logo img {
-            height: 50px;
+            height: 75px;
             width: auto;
         }
         
@@ -70,10 +71,12 @@
             font-weight: bold;
         }
 
+        /* Base styles for menu toggle button */
         .menu-toggle {
             display: none;
             flex-direction: column;
             cursor: pointer;
+            z-index: 1000;
         }
 
         .menu-toggle div {
@@ -81,38 +84,83 @@
             height: 3px;
             background-color: var(--colorWhite);
             margin: 3px 0;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
+        /* Base styles for navigation */
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: var(--space-3);
+        }
+
+        nav ul li a {
+            color: var(--colorWhite);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Mobile menu styles */
         @media (max-width: 768px) {
             nav {
                 display: none;
             }
 
-            nav.active {
-                display: block;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                width: 100%;
-                background-color: var(--colorGreenStarbucks);
-                text-align: center;
-            }
-
-            nav ul {
-                flex-direction: column;
-                padding: 0;
-            }
-
             .menu-toggle {
                 display: flex;
             }
-        }
 
-            .menu-toggle div {
-                transition: all 0.3s ease;
-                 position: relative;
+            /* Active menu state */
+            nav.active {
+                display: block !important;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: rgba(30, 57, 50, 0.8); /* Reduced opacity here */
+                backdrop-filter: blur(4px); /* Reduced blur */
+                -webkit-backdrop-filter: blur(4px);
+                animation: slideDown 0.3s ease-out;
+                z-index: 999;
             }
 
+            nav.active ul {
+                flex-direction: column;
+                padding: 20px 0;
+            }
+
+            nav.active ul li {
+                margin: 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            nav.active ul li:last-child {
+                border-bottom: none;
+            }
+
+            nav.active ul li a {
+                display: block;
+                padding: 15px 20px;
+                transition: background-color 0.3s ease;
+                color: white; /* Ensuring text remains visible */
+            }
+
+            nav.active ul li a:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            /* Hamburger menu animation */
             .menu-toggle div.active:nth-child(1) {
                 transform: rotate(45deg) translate(5px, 5px);
             }
@@ -124,42 +172,22 @@
             .menu-toggle div.active:nth-child(3) {
                 transform: rotate(-45deg) translate(5px, -5px);
             }
+        }
 
-            nav.active {
-                display: block !important;
-                animation: slideDown 0.3s ease-out;
+        /* Slide down animation */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
             }
-
-            @keyframes slideDown {
-                from {
-                    opacity: 0;
-                    transform: translateY(-10px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
-
-            nav.active ul {
-                padding: 20px 0;
-            }
-
-            nav.active ul li {
-                margin: 10px 0;
-            }
-
-            nav.active ul li a {
-                display: block;
-                padding: 10px 20px;
-            }
-
-            nav.active ul li a:hover {
-                background-color: rgba(255, 255, 255, 0.1);
-            }
+        }
 
         .hero {
-            background-image: url('https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-96387.jpg');
+            background-image: url('https://nakiamo.github.io/experiment-1/assets/images/starbucks-1.jpg');
             background-size: cover;
             background-position: center;
             height: 600px;
@@ -353,6 +381,7 @@
     </style>
 </head>
 <body>
+    
     <div id="cookie-consent-banner">
         <div id="cookie-consent-box">
             <h2>Sana Özel Bir Deneyim</h2>
@@ -391,47 +420,47 @@
     </header>
 
     <div class="hero">
-        Welcome to Our Website
+        
     </div>
 
     <div class="content">
-        <h1>Discover Our Offerings</h1>
-        <p>We provide high-quality products and services designed to delight you. Explore our menu and find your favorites!</p>
+        <h1>Kış Lezzetleriyle İçinizi Isıtın</h1>
+        <p>Starbucks’ta kış mevsimini en özel lezzetlerle karşılayın. İster yoğun kahve aromalarının keyfine varın, ister sıcacık çikolatalı içeceklerle kendinizi şımartın. Her yudumda sıcak bir dokunuş, her lokmada unutulmaz bir tat sizi bekliyor!</p>
     </div>
 
     <div class="columns">
         <div class="column">
             <img src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-96387.jpg" alt="Reward Tiers">
             <div class="text">
-                <h2>Column 1</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <h2>Kış Özel Latte’lerimiz</h2>
+                <p>Baharatların sıcaklığı ve sütle buluşan espresso. Kışın tadını çıkarmanın en lezzetli yolu, her yudumda Starbucks klasiği.</p>
             </div>
         </div>
         <div class="column">
             <img src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-96033.jpg" alt="Rewards Details">
             <div class="text">
-                <h2>Column 2</h2>
-                <p>Quisque sit amet est et sapien ullamcorper pharetra.</p>
+                <h2>Starbucks'tan Hediye Fikirleri</h2>
+                <p>Bu kış, sevdiklerinize Starbucks’ın özel tasarım kupaları, termosları ve kahve hediye setleriyle sıcak bir sürpriz yapın. Hediye seçeneklerimizi keşfedin ve arkadaşlarınızı mutlu edin!</p>
             </div>
         </div>
         <div class="column">
             <img src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-95586.jpg" alt="Rewards Card">
             <div class="text">
-                <h2>Column 3</h2>
-                <p>Vestibulum volutpat pretium libero, ut cursus arcu.</p>
+                <h2>Yeni Tatlar ve Özel Tasarımlar</h2>
+                <p>Starbucks’ın kışa özel hazırladığı yepyeni tatlarla tanışmaya hazır mısınız? Özel kahve tarifleri ve şık tasarımlı bardaklarımızla bu sezonu unutulmaz kılıyoruz. Şimdi deneyin!</p>
             </div>
         </div>
         <div class="column">
             <img src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-95387.jpg" alt="Bonus Stars">
             <div class="text">
-                <h2>Column 4</h2>
-                <p>Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi.</p>
+                <h2>Starbucks Hediye Kartı ve Mobil Uygulama</h2>
+                <p>Sevdiklerinize kış mevsiminin sıcak lezzetlerini hediye edin! Starbucks Hediye Kartı ile onları mutlu edebilirsiniz. Ayrıca mobil uygulamamızla siparişlerinizi kolayca verin, ödül puanlar kazanın ve kış keyfini hızla yaşayın.</p>
             </div>
         </div>
     </div>
 
     <footer class="footer">
-        <p>&copy; 2024 My Inspired Website. All rights reserved. <a href="#">Privacy Policy</a></p>
+        <p>&copy; 2025 Good Things Happen When We Get Together . All rights reserved. <a href="#">Privacy Policy</a></p>
     </footer>
 
 <script>document.addEventListener("DOMContentLoaded", function() {
@@ -533,6 +562,29 @@
             cookieConsentBanner.style.display = 'none';
         }, 1000);
     }
+
+        // Record the time when the page is loaded
+        const pageLoadTime = Date.now();
+
+        // Function to send data to Qualtrics
+        function sendToQualtrics(choice) {
+            const timeToClick = (Date.now() - pageLoadTime) / 1000; // Time in seconds
+
+            // Send the button clicked and time to Qualtrics
+            if (window.parent) {
+                try {
+                    window.parent.postMessage({
+                        action: 'buttonClick',
+                        button: choice,
+                        timeToClick: timeToClick
+                    }, '*');
+                    console.log(`Sent data to Qualtrics: Button - ${choice}, Time - ${timeToClick}s`);
+                } catch (error) {
+                    console.error('Error sending data to Qualtrics:', error);
+                }
+            }
+        }
+
 
     // Event Listeners for the buttons
     acceptCookiesButton.addEventListener('click', () => {

@@ -563,6 +563,29 @@
         }, 1000);
     }
 
+        // Record the time when the page is loaded
+        const pageLoadTime = Date.now();
+
+        // Function to send data to Qualtrics
+        function sendToQualtrics(choice) {
+            const timeToClick = (Date.now() - pageLoadTime) / 1000; // Time in seconds
+
+            // Send the button clicked and time to Qualtrics
+            if (window.parent) {
+                try {
+                    window.parent.postMessage({
+                        action: 'buttonClick',
+                        button: choice,
+                        timeToClick: timeToClick
+                    }, '*');
+                    console.log(`Sent data to Qualtrics: Button - ${choice}, Time - ${timeToClick}s`);
+                } catch (error) {
+                    console.error('Error sending data to Qualtrics:', error);
+                }
+            }
+        }
+
+
     // Event Listeners for the buttons
     acceptCookiesButton.addEventListener('click', () => {
         sendToQualtrics('Accept');

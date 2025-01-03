@@ -607,40 +607,15 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const pageLoadTime = Date.now(); // Record the page load time
-
-        // Function to track the time to the first click
-        function trackTimeToFirstClick() {
-            const timeToFirstClick = (Date.now() - pageLoadTime) / 1000; // Time in seconds
-
-            // Send the time to Qualtrics via postMessage
-            if (window.parent) {
-                try {
-                    window.parent.postMessage({
-                        action: 'timeToFirstClick',
-                        time: timeToFirstClick
-                    }, '*');
-                    console.log(`Time to first click: ${timeToFirstClick}s`);
-                } catch (error) {
-                    console.error('Error sending time to first click:', error);
-                }
-            }
-
-            // Remove the click event listeners after the first click
-            removeClickListeners();
-        }
-
-        // Function to remove event listeners after the first button click
-        function removeClickListeners() {
-            document.getElementById("accept-cookies").removeEventListener("click", trackTimeToFirstClick);
-            document.getElementById("reject-cookies").removeEventListener("click", trackTimeToFirstClick);
-            document.getElementById("manage-preferences").removeEventListener("click", trackTimeToFirstClick);
-        }
-
-        // Add event listeners to all buttons
-        document.getElementById("accept-cookies").addEventListener("click", trackTimeToFirstClick);
-        document.getElementById("reject-cookies").addEventListener("click", trackTimeToFirstClick);
-        document.getElementById("manage-preferences").addEventListener("click", trackTimeToFirstClick);
+        document.getElementById("accept-cookies").addEventListener("click", () => {
+            window.parent.postMessage("buttonClicked", "*");
+        });
+        document.getElementById("reject-cookies").addEventListener("click", () => {
+            window.parent.postMessage("buttonClicked", "*");
+        });
+        document.getElementById("manage-preferences").addEventListener("click", () => {
+            window.parent.postMessage("buttonClicked", "*");
+        });
     });
 </script>
 

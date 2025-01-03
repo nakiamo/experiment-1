@@ -381,8 +381,7 @@
     </style>
 </head>
 <body>
-    <div class="experiment-identifier" style="display: none;">Familiar-Coherent</div>
-
+    
     <div id="cookie-consent-banner">
         <div id="cookie-consent-box">
             <h2>Sana Özel Bir Deneyim</h2>
@@ -605,64 +604,6 @@
     });
 });
 </script>
-
-<script>
-    // Function to get the experiment condition from URL or other sources
-    function getExperimentCondition() {
-        // Check URL parameters first
-        const urlParams = new URLSearchParams(window.location.search);
-        const condition = urlParams.get('condition');
-        
-        // If condition is in URL, use that
-        if (condition) {
-            return condition;
-        }
-
-            // Check for the experiment identifier div
-    const identifierDiv = document.querySelector('.experiment-identifier');
-    if (identifierDiv) {
-        return identifierDiv.textContent;
-    }
-    
-    return 'unknown';
-}
-    
-    // Function to send experiment condition to Qualtrics
-    function sendExperimentConditionToQualtrics() {
-        const condition = getExperimentCondition();
-        
-        // Method 1: Via postMessage to parent window (Qualtrics)
-        if (window.parent) {
-            window.parent.postMessage({
-                action: 'setExperimentCondition',
-                condition: condition
-            }, '*');
-        }
-        
-        // Method 2: Update URL parameter
-        try {
-            const currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.set('ExperimentCondition', condition);
-            window.history.replaceState({}, '', currentUrl);
-        } catch (error) {
-            console.error('Error updating URL:', error);
-        }
-        
-        // Method 3: Store in localStorage as backup
-        try {
-            localStorage.setItem('ExperimentCondition', condition);
-        } catch (error) {
-            console.error('Error saving to localStorage:', error);
-        }
-        
-        // Log for debugging
-        console.log('Experiment condition sent:', condition);
-    }
-    
-    // Send experiment condition when page loads
-    document.addEventListener('DOMContentLoaded', sendExperimentConditionToQualtrics);
-    </script>
-
 
 </body>
 </html>

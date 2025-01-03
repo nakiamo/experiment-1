@@ -382,7 +382,7 @@
 </head>
 <body>
     <div class="experiment-identifier" style="display: none;">Familiar-Coherent</div>
-    
+
     <div id="cookie-consent-banner">
         <div id="cookie-consent-box">
             <h2>Sana Özel Bir Deneyim</h2>
@@ -617,22 +617,15 @@
         if (condition) {
             return condition;
         }
-        
-        // Otherwise determine condition based on which HTML content is present
-        // You can customize these checks based on your specific HTML markers
-        const content = document.documentElement.innerHTML;
-        if (content.includes('Familiar-Coherent specific content')) {
-            return 'Familiar-Coherent';
-        } else if (content.includes('Familiar-Uncoherent specific content')) {
-            return 'Familiar-Uncoherent';
-        } else if (content.includes('Unfamiliar-Coherent specific content')) {
-            return 'Unfamiliar-Coherent';
-        } else if (content.includes('Unfamiliar-Uncoherent specific content')) {
-            return 'Unfamiliar-Uncoherent';
-        }
-        
-        return 'unknown';
+
+            // Check for the experiment identifier div
+    const identifierDiv = document.querySelector('.experiment-identifier');
+    if (identifierDiv) {
+        return identifierDiv.textContent;
     }
+    
+    return 'unknown';
+}
     
     // Function to send experiment condition to Qualtrics
     function sendExperimentConditionToQualtrics() {

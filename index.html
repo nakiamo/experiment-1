@@ -512,6 +512,10 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+    // NEW: Add time tracking variables
+    const startTime = Date.now();
+    let firstClickTime = null;
+    
     const cookieConsentBanner = document.getElementById("cookie-consent-banner");
     const acceptCookiesButton = document.getElementById("accept-cookies");
     const rejectCookiesButton = document.getElementById("reject-cookies");
@@ -521,6 +525,26 @@
     const cookieButtons = document.getElementById("cookie-buttons");
     const preferenceOptions = document.getElementById("preference-options");
 
+    // NEW: Add function to record first click time
+    function recordFirstClick() {
+        if (!firstClickTime) {
+            firstClickTime = Date.now();
+            const timeToFirstClick = firstClickTime - startTime;
+            
+            // Send to Qualtrics embedded data
+            if (window.parent && window.parent.Qualtrics) {
+                window.parent.Qualtrics.SurveyEngine.setEmbeddedData("TimeToFirstClick", timeToFirstClick);
+            }
+            
+            // Backup method using postMessage
+            window.parent.postMessage({
+                action: 'setTimeToFirstClick',
+                time: timeToFirstClick
+            }, '*');
+        }
+    }
+    
+    
     // Function to send data to Qualtrics using multiple methods
     function sendToQualtrics(choice) {
         // Method 1: Direct parent window communication
@@ -565,21 +589,22 @@
 
     // Event Listeners for the buttons
     acceptCookiesButton.addEventListener('click', () => {
+        recordFirstClick();  // NEW LINE
         sendToQualtrics('Accept');
         hideBanner();
     });
 
     rejectCookiesButton.addEventListener('click', () => {
+        recordFirstClick();  // NEW LINE
         sendToQualtrics('Reject');
         hideBanner();
     });
 
-    // Show preference options when "Manage My Preferences" is clicked
     managePreferencesButton.addEventListener('click', () => {
+        recordFirstClick();  // NEW LINE
         cookieOptionsText.style.display = "none";
         cookieButtons.style.display = "none";
         preferenceOptions.style.display = "block";
-        // Note: We don't send data to Qualtrics yet, as the user hasn't made their final choice
     });
 
     // Handle saving preferences

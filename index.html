@@ -530,6 +530,9 @@
         if (!firstClickTime) {
             firstClickTime = Date.now();
             const timeToFirstClick = firstClickTime - startTime;
+    
+            // Convert milliseconds to seconds with three decimal places
+            const timeToFirstClick = (timeToFirstClickMs / 1000).toFixed(3);    
             
             // Only use postMessage method
             window.parent.postMessage({

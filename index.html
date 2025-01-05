@@ -527,16 +527,19 @@
 
     // NEW: Add function to record first click time
     function recordFirstClick() {
+        function recordFirstClick() {
     if (!firstClickTime) {
         firstClickTime = Date.now();
-        const timeToFirstClick = firstClickTime - startTime;
+        const timeInMilliseconds = firstClickTime - startTime;
+        const timeInSeconds = (timeInMilliseconds / 1000).toFixed(3);
         
-        // Only use postMessage method
+        // use postMessage to send the time to Qualtrics
+        // Send formatted time to Qualtrics
         window.parent.postMessage({
             action: 'setTimeToFirstClick',
-            time: timeToFirstClick
+            time: timeInSeconds
         }, '*');
-        console.log('recordFirstClick - time:', timeToFirstClick);
+        console.log('recordFirstClick - time in seconds:', timeInSeconds);
     }
 }
     

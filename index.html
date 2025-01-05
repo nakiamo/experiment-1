@@ -531,18 +531,12 @@
             firstClickTime = Date.now();
             const timeToFirstClick = firstClickTime - startTime;
             
-            // Send to Qualtrics embedded data
-            if (window.parent && window.parent.Qualtrics) {
-                window.parent.Qualtrics.SurveyEngine.setEmbeddedData("TimeToFirstClick", timeToFirstClick);
-                console.log('Sent time directly to Qualtrics:', timeToFirstClick);
-            }
-            
-            // Backup method using postMessage
+            // Only use postMessage method
             window.parent.postMessage({
                 action: 'setTimeToFirstClick',
                 time: timeToFirstClick
             }, '*');
-            console.log('Sent time via postMessage:', timeToFirstClick);
+            console.log('recordFirstClick - time:', timeToFirstClick);
         }
     }
     

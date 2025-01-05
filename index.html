@@ -539,10 +539,12 @@
         }
         
         // Backup method using postMessage
-        window.parent.postMessage({
+        const messageData = {
             action: 'setTimeToFirstClick',
             time: timeInSeconds
-        }, '*');
+        };
+        console.log('Preparing to send message:', messageData);
+        window.parent.postMessage(messageData, '*');
         console.log('Sent time via postMessage:', timeInSeconds);
     }
 }

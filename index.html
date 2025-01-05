@@ -530,22 +530,13 @@
     if (!firstClickTime) {
         firstClickTime = Date.now();
         const timeToFirstClick = firstClickTime - startTime;
-        const timeInSeconds = (timeToFirstClick / 1000).toFixed(3);
         
-        // Send to Qualtrics embedded data
-        if (window.parent && window.parent.Qualtrics) {
-            window.parent.Qualtrics.SurveyEngine.setEmbeddedData("TimeToFirstClick", timeInSeconds);
-            console.log('Sent time directly to Qualtrics:', timeInSeconds);
-        }
-        
-        // Backup method using postMessage
-        const messageData = {
+        // Only use postMessage method
+        window.parent.postMessage({
             action: 'setTimeToFirstClick',
-            time: timeInSeconds
-        };
-        console.log('Preparing to send message:', messageData);
-        window.parent.postMessage(messageData, '*');
-        console.log('Sent time via postMessage:', timeInSeconds);
+            time: timeToFirstClick
+        }, '*');
+        console.log('recordFirstClick - time:', timeToFirstClick);
     }
 }
     

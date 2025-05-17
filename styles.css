@@ -1,0 +1,403 @@
+/* ==========================================================================
+   CSS Variables
+   ========================================================================== */
+:root {
+    /* Colors */
+    --colorWhite: #fff;
+    --colorNeutralCool: #f3f1e7;
+    --colorGreenStarbucks: #1e3932;
+    --colorlightGreenStarbucks: #00704A;
+    --colorBlack: #000;
+    --colorTextBackground: #d4e9e2;
+
+    /* Typography */
+    --textSize2: 1.4rem;
+    --lineHeightNormal: 1.5;
+
+    /* Spacing */
+    --space-3: 1.6rem;
+    --space-6: 4rem;
+    --space-5: 0.6rem;
+}
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+body {
+    margin: 0;
+    font-family: SoDoSans, Helvetica Neue, Helvetica, Arial, sans-serif;
+    background-color: var(--colorWhite);
+    color: var(--colorBlack);
+    font-size: var(--textSize2);
+    line-height: var(--lineHeightNormal);
+}
+
+/* ==========================================================================
+   Header & Navigation
+   ========================================================================== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-5) var(--space-6);
+    background-color: var(--colorGreenStarbucks);
+    color: var(--colorWhite);
+    position: relative;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+}
+
+header .logo img {
+    height: 75px;
+    width: auto;
+}
+
+/* Navigation */
+nav {
+    display: flex;
+    align-items: center;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: var(--space-3);
+}
+
+nav ul li a {
+    color: var(--colorWhite);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   Mobile Menu
+   ========================================================================== */
+/* Menu Toggle Button */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.menu-toggle div {
+    width: 25px;
+    height: 3px;
+    background-color: var(--colorWhite);
+    margin: 3px 0;
+    transition: all 0.3s ease;
+    position: relative;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+}
+
+/* Mobile Menu Styles */
+@media (max-width: 768px) {
+    nav {
+        display: none;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    /* Active Menu State */
+    nav.active {
+        display: block !important;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: rgba(30, 57, 50, 0.8);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        animation: slideDown 0.3s ease-out;
+        z-index: 999;
+        transform: translateZ(0);
+        will-change: transform, opacity;
+    }
+
+    nav.active ul {
+        flex-direction: column;
+        padding: 20px 0;
+    }
+
+    nav.active ul li {
+        margin: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    nav.active ul li:last-child {
+        border-bottom: none;
+    }
+
+    nav.active ul li a {
+        display: block;
+        padding: 15px 20px;
+        transition: background-color 0.3s ease;
+        color: white;
+        transform: translateZ(0);
+        will-change: background-color;
+    }
+
+    nav.active ul li a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Hamburger Menu Animation */
+    .menu-toggle div.active:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .menu-toggle div.active:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle div.active:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+.hero {
+    background-image: url('https://nakiamo.github.io/experiment-1/assets/images/starbucks-1.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--colorWhite);
+    font-size: 3.6rem;
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   Content Section
+   ========================================================================== */
+.content {
+    padding: var(--space-6);
+    text-align: center;
+}
+
+.content h1 {
+    font-size: 2.8rem;
+    color: var(--colorGreenStarbucks);
+}
+
+.content p {
+    font-size: 1.6rem;
+    margin: 2rem 0;
+}
+
+/* ==========================================================================
+   Grid Layout
+   ========================================================================== */
+.columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    padding: 0;
+}
+
+.column {
+    display: flex;
+    align-items: stretch;
+    background-color: var(--colorNeutralCool);
+    border-radius: 12px;
+    overflow: hidden;
+    flex-direction: column;
+    margin: 0;
+    width: 100%;
+}
+
+.column img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.column .text {
+    width: 100%;
+    padding: var(--space-3);
+    background-color: var(--colorTextBackground);
+    color: var(--colorBlack);
+    box-sizing: border-box;
+}
+
+.column .text h2 {
+    margin: 0 0 10px;
+    font-size: 2rem;
+    color: var(--colorGreenStarbucks);
+}
+
+.column .text p {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+/* Desktop Grid Layout */
+@media (min-width: 768px) {
+    .columns {
+        grid-template-columns: 1fr;
+        padding: var(--space-6);
+    }
+
+    .column {
+        flex-direction: row;
+    }
+
+    .column img {
+        flex: 1;
+        width: 100%;
+        max-width: 50%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .column .text {
+        flex: 1;
+        max-width: 50%;
+        padding: var(--space-3);
+        background-color: var(--colorTextBackground);
+        color: var(--colorBlack);
+        box-sizing: border-box;
+    }
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.footer {
+    background-color: var(--colorBlack);
+    color: var(--colorWhite);
+    padding: var(--space-6);
+    text-align: center;
+}
+
+.footer a {
+    color: var(--colorGreenStarbucks);
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   Cookie Consent
+   ========================================================================== */
+#cookie-consent-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#cookie-consent-box {
+    background-color: var(--colorNeutralCool);
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: small;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 90%;
+}
+
+#cookie-consent-box h2 {
+    color: var(--colorGreenStarbucks);
+    margin-bottom: 1rem;
+}
+
+#cookie-consent-box button {
+    background-color: var(--colorlightGreenStarbucks);
+    color: var(--colorWhite);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0.5rem;
+}
+
+#cookie-consent-box a {
+    color: var(--colorGreenStarbucks);
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+#preference-options {
+    display: none;
+    margin-top: 1rem;
+    text-align: left;
+}
+
+#preference-options label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+.starbucks-text {
+    text-transform: uppercase;
+    font-family: 'SoDo Sans Bold', Arial, sans-serif;
+    color: #00704A;
+    font-weight: bold;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+.fade-out {
+    animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} 
